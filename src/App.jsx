@@ -1118,7 +1118,7 @@ export default function App() {
                   <button onClick={() => setIsClearJobsModalOpen(true)} className="flex items-center gap-1.5 bg-white text-red-600 text-[10px] font-black uppercase px-4 py-2.5 rounded-xl border border-red-100 shadow-sm transition-all hover:bg-red-50"><Trash2 className="w-4 h-4" /> Wipe</button>
                   <button onClick={() => setIsAddTeamModalOpen(true)} className="flex items-center gap-2 bg-slate-900 text-white text-[10px] font-black uppercase px-5 py-2.5 rounded-xl shadow-xl transition-all hover:scale-[1.02] active:scale-95"><Plus className="w-4 h-4" /> Cleaner</button>
                   <button onClick={() => setIsAddPropertyModalOpen(true)} className="flex items-center gap-2 bg-slate-900 text-white text-[10px] font-black uppercase px-5 py-2.5 rounded-xl shadow-xl transition-all hover:scale-[1.02] active:scale-95"><Plus className="w-4 h-4" /> Property</button>
-                  <button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2 bg-slate-900 text-white text-[10px] font-black uppercase px-5 py-2.5 rounded-xl shadow-xl transition-all hover:scale-[1.02] active:scale-95"><Plus className="w-4 h-4" /> New Job</button>
+                  <button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2 bg-indigo-600 text-white text-[10px] font-black uppercase px-5 py-2.5 rounded-xl shadow-xl transition-all hover:scale-[1.02] active:scale-95"><Plus className="w-4 h-4" /> New Job</button>
                 </div>
               </div>
               <div className="flex gap-4 border-b border-slate-200 mb-6 overflow-x-auto no-scrollbar">
