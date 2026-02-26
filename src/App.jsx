@@ -952,6 +952,14 @@ export default function App() {
       const monthStr = today.substring(0, 7);
       filtered = filtered.filter(j => j.isoDate.startsWith(monthStr));
     }
+    
+    // Sort jobs in chronological order (earliest date first)
+    filtered.sort((a, b) => {
+      if (a.isoDate < b.isoDate) return -1;
+      if (a.isoDate > b.isoDate) return 1;
+      return 0;
+    });
+    
     return filtered;
   };
 
