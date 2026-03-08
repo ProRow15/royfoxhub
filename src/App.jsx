@@ -403,6 +403,25 @@ export default function App() {
     try { await updateDoc(jobRef, updates); } catch (e) { console.error("Error updating status", e); }
   };
 
+  const handleCompleteJob = async (e, id, currentStatus) => {
+    if (e) e.stopPropagation();
+    if (!user) return;
+    if (currentStatus !== 'in-progress' && currentStatus !== 'issue') return;
+    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const jobRef = getDocRef('jobs', id);
+    const updates = { status: 'completed', timeCompleted: now };
+
+    if (currentStatus === 'issue') {
+        const batch = writeBatch(db);
+        batch.update(jobRef, updates);
+        const relatedAlerts = alerts.filter(a => a.jobId === id && !a.resolved);
+        relatedAlerts.forEach(a => batch.update(getDocRef('alerts', a.id), { resolved: true }));
+        try { await batch.commit(); return; } catch(e) { console.error("Error completing job from issue", e); return; }
+    }
+
+    try { await updateDoc(jobRef, updates); } catch (e) { console.error("Error completing job", e); }
+  };
+
   const revertStatus = async (e, id) => {
     if (e) e.stopPropagation();
     if (!user) return;
@@ -775,7 +794,7 @@ export default function App() {
       case 'in-progress': return <button onClick={(e) => advanceStatus(e, job.id, job.status)} className="px-5 py-2.5 bg-emerald-600 text-white text-[10px] font-black uppercase rounded-xl">Finish</button>;
       case 'issue': return userRole === 'admin' 
           ? <button onClick={(e) => advanceStatus(e, job.id, job.status)} className="px-5 py-2.5 bg-red-600 text-white text-[10px] font-black uppercase rounded-xl hover:bg-red-500 transition-colors">Resolve</button>
-          : <span className="px-5 py-2.5 bg-red-50 text-red-500 text-[10px] font-black uppercase rounded-xl border border-red-100 cursor-not-allowed">Pending Admin</span>;
+          : <button onClick={(e) => handleCompleteJob(e, job.id, job.status)} className="px-5 py-2.5 bg-emerald-600 text-white text-[10px] font-black uppercase rounded-xl hover:bg-emerald-500 transition-colors">Finish</button>;
       case 'completed': return <button onClick={(e) => revertStatus(e, job.id)} className="px-5 py-2.5 bg-slate-100 text-slate-400 text-[10px] font-black uppercase rounded-xl">Undo</button>;
       default: return null;
     }
